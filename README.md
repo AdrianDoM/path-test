@@ -5,10 +5,12 @@ _by [AdrianDoM](github.com/AdrianDoM)_
 
 Simple Python script and Haskell code to test the main five algorithms: `breadthFirstSearch`, `depthFirstSearch`, `iterDeepSearch`, `bestFirstSearch` and `aStartSearch`. _I hope you find this useful!_
 
+> __Important.__ Even though in the assignment instructions you are told that you can assume that `bestFirstSearch` and `aStarSearch` will always be run on inputs with a solution, these tests ignore that assumption. This means that for them to work properly your  `bestFirstSearch` and `aStarSearch` implementations must return `Nothing` when no solution is found.
+
 ## Usage
 Copy `test.py` and `Test.hs` to the directory where you keep the rest of the Inf2D Assignment 1 files.
 
-These two work together with you `Inf2d1.hs` file and will in fact modify the contents of the `badNodesList` defined in it. Because of this, I highly recommend keeping a backup copy of `Inf2d1.hs`, just in case something goes terribly wrong. Note also that the tests will run all the previously mentioned algorithms and therefore __you must have implemented them already!__
+These two work together with you `Inf2d1.hs` file and will in fact modify the contents of the `badNodesList` defined in it. Because of this, I strongly recommend keeping a backup copy of `Inf2d1.hs`, just in case something goes terribly wrong. Note also that the tests will run all the previously mentioned algorithms and therefore __you must have implemented them already!__
 
 Once you're ready to run the tests, open the directory on a terminal and type the command `python test.py -h`. This will prompt the help for the Python script. As you can see, you can tweak the following options:
 * `-p` will print a _pretty_ representation of the paths found for each algorithm - usually means a lot of output to the terminal.
