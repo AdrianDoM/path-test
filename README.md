@@ -3,7 +3,7 @@
 _by [AdrianDoM](github.com/AdrianDoM)_
 ***
 
-Simple Python script and Haskell code to test the main five algorithms: breadthFirstSearch, depthFirstSearch, iterDeepSearch, bestFirstSearch and aStartSearch. _I hope you find this useful!_
+Simple Python script and Haskell code to test the main five algorithms: `breadthFirstSearch`, `depthFirstSearch`, `iterDeepSearch`, `bestFirstSearch` and `aStartSearch`. _I hope you find this useful!_
 
 ## Usage
 Copy `test.py` and `Test.hs` to the directory where you keep the rest of the Inf2D Assignment 1 files.
