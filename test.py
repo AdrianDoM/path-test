@@ -1,3 +1,7 @@
+# test.py by github.com/AdrianDoM
+# Documentation can by found in https://github.com/AdrianDoM/path-test
+# 10th February 2019
+
 from __future__ import print_function
 from ast import literal_eval
 import argparse
@@ -6,9 +10,17 @@ import re
 import subprocess
 import time
 
-filename = 'Inf2d1.hs'
-
-randomSamples = 5
+#========================================================================================#
+#                                  LIST OF INPUTS TO RUN                                 #
+#========================================================================================#
+#                                                                                        #
+#  'mazes' is a list of pairs containing a badNodesList and a list of start-goal pairs.  #
+#  Some interesting badNodesList's and pairs have been already set.                      #
+#                                                                                        #
+#  When the second list of the pair is empty, i.e. no start-goal pairs are set, random   #
+#  ones will be generated. The number of these is controled by the '-s' flag.            #
+#                                                                                        #
+#========================================================================================#
 
 mazes = [ ([],[]),
           ([(2,2),(2,3),(2,4),(2,5),(3,2),(4,2),(5,2),(4,4),(4,5),(4,6),(5,5)], [((1,2),(5,6)), ((1,1),(6,6))]),
@@ -16,6 +28,7 @@ mazes = [ ([],[]),
           ([(1,1),(2,2),(3,3),(4,4),(5,5),(6,6)], [((6,1),(1,6)), ((1,2),(5,6))])
         ] 
 
+filename = 'Inf2d1.hs' # name of the assignment file
 
 # RESULTS CLASS
 class Result:
@@ -93,7 +106,7 @@ parser.add_argument('-p', '--paths', help='print each of the paths found', actio
 parser.add_argument('-t', '--text', help='print text representation of paths', action='store_true')
 parser.add_argument('-r', '--randombadnodes', type=int, default=0, metavar='R',
                     help='number of random badNodes lists to be generated')
-parser.add_argument('-s', '--samples', type=int, default=5, metavar='S'
+parser.add_argument('-s', '--samples', type=int, default=5, metavar='S',
                     help='number of random start-goal pairs to be generated for each badNodes list')
 args = parser.parse_args()
 
@@ -168,6 +181,7 @@ for maze in mazes:
     
     for (s, g) in maze[1]:
         t0 = time.time()
+        # Run 'Test.hs' and get output
         process = subprocess.Popen(['runghc','Test.hs', repr(s), repr(g)], stdout=subprocess.PIPE)
         out, err = process.communicate()
 
@@ -202,3 +216,4 @@ for result in incompleteResults:
 for result in suboptimalResults:
     print('Optimal solutions are not consistent in:')
     print(result)
+

@@ -1,3 +1,7 @@
+-- test.py by github.com/AdrianDoM
+-- Documentation can by found in https://github.com/AdrianDoM/path-test
+-- 10th February 2019
+
 module Test where
 
 import Inf2d1
