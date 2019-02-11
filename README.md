@@ -7,6 +7,8 @@ Simple Python script and Haskell code to test the main five algorithms: `breadth
 
 > __Important.__ Even though in the assignment instructions you are told that you can assume that `bestFirstSearch` and `aStarSearch` will always be run on inputs with a solution, these tests ignore that assumption. This means that for them to work properly your  `bestFirstSearch` and `aStarSearch` implementations must return `Nothing` when no solution is found.
 
+> Please note that this project has only been tested on DICE.
+
 ## Usage
 Copy `test.py` and `Test.hs` to the directory where you keep the rest of the Inf2D Assignment 1 files.
 
