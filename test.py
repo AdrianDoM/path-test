@@ -9,6 +9,7 @@ import random
 import re
 import subprocess
 import time
+from threading import Timer
 
 #========================================================================================#
 #                                  LIST OF INPUTS TO RUN                                 #
@@ -70,17 +71,21 @@ class Result:
         return Result.showPath(self.paths[index], self.badNodes, self.start, self.goal, Result.algorithmNames[index])
     
     def checkComplete(self):
-        if len(self.paths[0]) == 0:
+        if len(self.paths) == 0:
+            self.isComplete = False
+        elif len(self.paths[0]) == 0:
             self.isComplete = all(len(path) == 0 for path in self.paths[1:])
         else:
             self.isComplete = all(len(path) >  0 for path in self.paths[1:])
     
     def checkOptimal(self):
-        lengths = list(map(len, self.paths))
-        optLen = lengths[0]
-        res = lengths[2] == optLen and lengths[4] == optLen
-        res = lengths[1] >= optLen and lengths[3] >= optLen
-        self.isOptimal = res
+        if len(self.paths) == 0:
+            self.isOptimal = False
+        else:
+            lengths = list(map(len, self.paths))
+            optLen = lengths[0]
+            res = lengths[2] == optLen and lengths[4] == optLen
+            res = lengths[1] >= optLen and lengths[3] >= optLen
 
     def printResults(self):
         resultLines = lines(self.showPathAt(0))
@@ -181,27 +186,48 @@ for maze in mazes:
     
     for (s, g) in maze[1]:
         t0 = time.time()
+        kill = lambda proc: proc.kill()
         # Run 'Test.hs' and get output
         process = subprocess.Popen(['runghc','Test.hs', repr(s), repr(g)], stdout=subprocess.PIPE)
-        out, err = process.communicate()
-
-        t1 = time.time()
-        t = t1 - t0
-        times.append(t)
-
+        ghc_timer = Timer(5, kill, [process])
+        
+        try:
+            ghc_timer.start()
+            out, err = process.communicate()
+        finally:
+            ghc_timer.cancel()
+            
         outLines = out.strip().split('\n')
-        paths = list(map(parsePath, outLines))
-        
-        result = Result(badNodes, s, g, paths, t)
-        if not result.isComplete:
+        timeoutN = len(outLines)
+        if timeoutN < 5:
+            flawAlgo = ''
+            if timeoutN is 0:
+                flawAlgo = 'breadthFirstSearch'
+            elif timeoutN is 1:
+                flawAlgo = 'depthFirstSearch'
+            elif timeoutN is 2:
+                flawAlgo = 'iterDeepSearch'
+            elif timeoutN is 3:
+                flawAlgo = 'bestFirstSearch'
+            elif timeoutN is 4:
+                flawAlgo = 'aStarSearch'
+            print('Timeout found: algo = {}, start = {}, goal = {}, badNodes = {}\n'.format(flawAlgo, s, g, maze[0]))
+            result = Result(badNodes, s, g, [], -1)
             incompleteResults.append(result)
-        if not result.isOptimal:
-            suboptimalResults.append(result)
-        
-        if args.text:
-            print(result)
-        if args.paths:
-            result.printResults()
+        else:
+            t1 = time.time()
+            t = t1 - t0
+            times.append(t)
+            paths = list(map(parsePath, outLines))
+            result = Result(badNodes, s, g, paths, t)
+            if not result.isComplete:
+                incompleteResults.append(result)
+            if not result.isOptimal:
+                suboptimalResults.append(result)
+            if args.text:
+                print(result)
+            if args.paths:
+                result.printResults()
 
 
 # PRINT ERRORS
