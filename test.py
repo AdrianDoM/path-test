@@ -85,7 +85,8 @@ class Result:
             lengths = list(map(len, self.paths))
             optLen = lengths[0]
             res = lengths[2] == optLen and lengths[4] == optLen
-            res = lengths[1] >= optLen and lengths[3] >= optLen
+            res = lengths[1] >= optLen and lengths[3] >= optLen and res
+            self.isOptimal = res
 
     def printResults(self):
         resultLines = lines(self.showPathAt(0))
