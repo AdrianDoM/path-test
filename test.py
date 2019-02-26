@@ -9,6 +9,8 @@ import random
 import re
 import subprocess
 import time
+import os
+import signal
 from threading import Timer
 
 #========================================================================================#
@@ -188,9 +190,13 @@ for maze in mazes:
     for (s, g) in maze[1]:
         t0 = time.time()
         kill = lambda proc: proc.kill()
+        def killa(proc):
+            pid=proc.pid
+            for x in range(2,6):
+                os.kill(pid+x, signal.SIGKILL)
         # Run 'Test.hs' and get output
         process = subprocess.Popen(['runghc','Test.hs', repr(s), repr(g)], stdout=subprocess.PIPE)
-        ghc_timer = Timer(5, kill, [process])
+        ghc_timer = Timer(5, killa, [process])
         
         try:
             ghc_timer.start()
