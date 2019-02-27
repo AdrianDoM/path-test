@@ -178,11 +178,9 @@ def lines(string):
 def concatLines(a, b, sep):
     return [ l1 + sep + l2 for (l1,l2) in zip(a,b) ]
     
-kill = lambda proc: proc.kill()
-def killa(proc):
-    pid = proc.pid
-    for x in range(2,6):
-        os.kill(pid + x, signal.SIGKILL)
+def killall(parentProcess):
+    pgid = parentProcess.pid
+    os.killpg(pgid, signal.SIGKILL)
 
 # MAIN SCRIPT
 incompleteResults = []
@@ -195,8 +193,10 @@ for maze in mazes:
     for (s, g) in maze[1]:
         t0 = time.time()
         # Run 'Test.hs' and get output
-        process = subprocess.Popen(['runghc','Test.hs', repr(s), repr(g)], stdout=subprocess.PIPE)
-        ghc_timer = Timer(5, killa, [process])
+        process = subprocess.Popen(['runghc','Test.hs', repr(s), repr(g)],
+                stdout=subprocess.PIPE,
+                preexec_fn=os.setsid)
+        ghc_timer = Timer(5, killall, [process])
         
         try:
             ghc_timer.start()
