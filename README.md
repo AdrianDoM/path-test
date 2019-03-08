@@ -1,6 +1,6 @@
 # path-test
 ### Inf2D Assignment 1 Pathfinding algorithms testing framework
-_by [AdrianDoM](github.com/AdrianDoM)_
+_by [AdrianDoM](https://github.com/AdrianDoM)_
 ***
 
 Simple Python script and Haskell code to test the main five algorithms: `breadthFirstSearch`, `depthFirstSearch`, `iterDeepSearch`, `bestFirstSearch` and `aStartSearch`. _I hope you find this useful!_
